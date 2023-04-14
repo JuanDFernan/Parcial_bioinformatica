@@ -1,0 +1,50 @@
+# Parcial_bioinformatica
+#Punto 1
+## expresiones regulares
+```
+(>\w+.\w+)(\w+)(\w=).+
+$1_CO1_$2_$3
+- curl 'https://raw.githubusercontent.com/paula-torres/bioinformatica_ur/main/files/query_parcial.fasta' > query.fasta
+cargar popset al cluster 
+scp -i bio.pt.pem -P 37022 /Users/prestamoqm/Downloads/sequence.fasta bio.pt@172.25.255.10:/home/bio.pt/data/Parcial1/parcial1_JuanFernandez 
+- salloc 
+blast secuencia query
+- module load blast/2.7.1
+```
+
+## crear base de datos 
+```
+- makeblastdb -in sequence.fasta  -dbtype nucl -parse_seqids -out data_sequence -title "Noctuidae cytochrome oxidase subunit 1"
+blast
+blastn -query query.fasta -task megablast -db data_sequence -outfmt 7 -word_size 7 -out blast_nco -num_threads 1
+```
+
+Segun los resultados dados por el blast, la query sequence corresponde a un gen co1, comparando los valores del e value
+se que es posiblemente una secuencia perteneciente a la especie Mythimna loreyi
+
+#Punto 2
+
+## concatenar secuencias 
+```
+cat query.fasta >> sequence.fasta
+alineamiento
+muscle -in sequence.fasta -out alineamiento.fasta
+```
+
+#Punto 3
+```
+- curl 'https://github.com/paula-torres/bioinformatica_ur/wiki/Parcial#:~:text=clase%20el%20siguiente-,archivo,-D%C3%ADgame%20cu%C3%A1ntas%20filas'> punto4.csv
+Numero de filas, caracteres y columnas tiene el archivo 
+- awk -F "," '{print NF; exit}' punto4.csv (contiene 4 columnas)
+- awk 'END {print NR}' punto4.csv (contiene 49 filas)
+- wc punto4.csv (palabras)
+```
+
+## Modifique la palabra chrom por Cromosoma y reemplace las comas , por tabs \t. guárdelo en un archivo de nombre result_file.bed.
+```
+- sed 's/chr/cromosoma/' punto4.csv > result_file.bed
+guardar filas que presenten el patron coding 
+grep no_coding punto4.csv
+
+```
+
